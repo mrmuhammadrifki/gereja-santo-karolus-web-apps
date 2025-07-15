@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\JemaatModel;
 use App\Models\DataKKModel;
 use App\Models\RayonModel;
+use Dompdf\Dompdf;
 
 class Jemaat extends BaseController
 {
@@ -13,6 +14,7 @@ class Jemaat extends BaseController
     public function __construct()
     {
         $this->jemaatModel = new JemaatModel();
+        $this->kkModel = new DataKKModel();
     }
 
     public function index()
@@ -95,5 +97,41 @@ class Jemaat extends BaseController
 
         return redirect()->to('/jemaat/detail/' . $id_kk)
                          ->with('success', 'Anggota jemaat berhasil dihapus.');
+    }
+
+    public function pdf($id_kk)
+    {
+        // Ambil data KK (kepala keluarga)
+        $kk = $this->kkModel->find($id_kk);
+        if (! $kk) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('KK tidak ditemukan');
+        }
+
+        // Ambil anggota jemaat
+        $anggota = $this->jemaatModel
+                        ->where('id_kk', $id_kk)
+                        ->findAll();
+
+        // Embed logo
+        $logoPath = FCPATH . 'assets/img/logo_sh.png';
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logoSrc  = 'data:image/png;base64,' . $logoData;
+
+        // Render view PDF
+        $html = view('pages/jemaat/pdf', [
+            'title'   => 'Daftar Jemaat - ' . $kk['nama_kk'],
+            'kk'      => $kk,
+            'anggota' => $anggota,
+            'logoSrc' => $logoSrc,
+        ]);
+
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4','portrait');
+        $dompdf->render();
+
+        // Stream inline
+        return $dompdf->stream('jemaat_keluarga_'.$id_kk.'.pdf', ['Attachment'=>0]);
     }
 }

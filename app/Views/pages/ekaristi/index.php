@@ -7,7 +7,12 @@
 <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
 <?php endif ?>
 
-<a href="<?= site_url('ekaristi/create') ?>" class="btn btn-primary mb-3">Tambah Ekaristi</a>
+<p>
+    <a href="<?= site_url('ekaristi/create') ?>" class="btn btn-primary mb-3 me-2">Tambah Ekaristi</a>
+    <a href="<?= site_url('ekaristi/pdf') ?>" target="_blank" class="btn btn-danger mb-3">
+        <i class="fas fa-file-pdf"></i> Cetak PDF
+    </a>
+</p>
 
 <table class="table table-bordered">
     <thead>

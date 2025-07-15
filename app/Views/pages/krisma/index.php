@@ -7,7 +7,12 @@
 <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
 <?php endif ?>
 
-<a href="<?= site_url('krisma/create') ?>" class="btn btn-primary mb-3">Tambah Krisma</a>
+<p>
+    <a href="<?= site_url('krisma/create') ?>" class="btn btn-primary mb-3 me-2">Tambah Krisma</a>
+    <a href="<?= site_url('krisma/pdf') ?>" target="_blank" class="btn btn-danger mb-3">
+        <i class="fas fa-file-pdf"></i> Cetak PDF
+    </a>
+</p>
 
 <table class="table table-bordered">
     <thead>

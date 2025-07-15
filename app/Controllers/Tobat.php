@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\TobatModel;
 use CodeIgniter\Controller;
+use Dompdf\Dompdf;
 
 class Tobat extends Controller
 {
@@ -78,5 +79,32 @@ class Tobat extends Controller
         $this->model->delete($id);
         session()->setFlashdata('success', 'Data Tobat berhasil dihapus.');
         return redirect()->to('/tobat');
+    }
+
+    public function pdf()
+    {
+        // Ambil semua data Tobat
+        $data = $this->model->findAll();
+
+        // Embed logo (assets/img/logo_sh.png)
+        $logoPath = FCPATH . 'assets/img/logo_sh.png';
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logoSrc  = 'data:image/png;base64,' . $logoData;
+
+        // Render view PDF
+        $html = view('pages/tobat/pdf', [
+            'title'   => 'Daftar Sakramen Tobat',
+            'tobat'   => $data,
+            'logoSrc' => $logoSrc,
+        ]);
+
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4','portrait');
+        $dompdf->render();
+
+        // Stream inline
+        return $dompdf->stream('tobat.pdf', ['Attachment' => 0]);
     }
 }

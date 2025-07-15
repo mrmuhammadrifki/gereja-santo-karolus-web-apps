@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\PerkawinanModel;
 use CodeIgniter\Controller;
+use Dompdf\Dompdf;
 
 class Perkawinan extends Controller
 {
@@ -77,5 +78,32 @@ class Perkawinan extends Controller
         $this->model->delete($id);
         session()->setFlashdata('success', 'Data Perkawinan berhasil dihapus.');
         return redirect()->to('/perkawinan');
+    }
+
+     public function pdf()
+    {
+        // Ambil semua data
+        $data = $this->model->findAll();
+
+        // Embed logo (assets/img/logo_sh.png)
+        $logoPath = FCPATH . 'assets/img/logo_sh.png';
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logoSrc  = 'data:image/png;base64,' . $logoData;
+
+        // Render view PDF
+        $html = view('pages/perkawinan/pdf', [
+            'title'      => 'Daftar Perkawinan',
+            'perkawinan' => $data,
+            'logoSrc'    => $logoSrc,
+        ]);
+
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4','portrait');
+        $dompdf->render();
+
+        // Stream inline
+        return $dompdf->stream('perkawinan.pdf', ['Attachment' => 0]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\BaptisModel;
 use CodeIgniter\Controller;
+use Dompdf\Dompdf;
 
 class Baptis extends Controller
 {
@@ -100,5 +101,32 @@ class Baptis extends Controller
         $this->baptisModel->delete($id);
         session()->setFlashdata('success', 'Data Baptis berhasil dihapus.');
         return redirect()->to('/baptis');
+    }
+
+    public function pdf()
+    {
+        // Ambil semua data Baptis
+        $baptis = $this->baptisModel->findAll();
+
+        // Embed logo (assets/img/logo_sh.png)
+        $logoPath = FCPATH . 'assets/img/logo_sh.png';
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logoSrc  = 'data:image/png;base64,' . $logoData;
+
+        // Render view PDF
+        $html = view('pages/baptis/pdf', [
+            'title'   => 'Daftar Baptis',
+            'baptis'  => $baptis,
+            'logoSrc' => $logoSrc,
+        ]);
+
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4','portrait');
+        $dompdf->render();
+
+        // Stream inline
+        return $dompdf->stream('baptis.pdf', ['Attachment'=>0]);
     }
 }

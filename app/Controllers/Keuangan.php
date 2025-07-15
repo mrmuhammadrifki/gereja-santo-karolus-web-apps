@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\KeuanganModel;
 use CodeIgniter\Controller;
+use Dompdf\Dompdf;
 
 class Keuangan extends Controller
 {
@@ -79,5 +80,45 @@ class Keuangan extends Controller
         $this->model->delete($id);
         session()->setFlashdata('success', 'Transaksi berhasil dihapus.');
         return redirect()->to('/keuangan');
+    }
+
+     public function pdf()
+    {
+        // Ambil semua transaksi
+        $records = $this->model->orderBy('created_at','ASC')->findAll();
+
+        // Hitung total pemasukan & pengeluaran
+        $totalIn  = 0;
+        $totalOut = 0;
+        foreach ($records as $r) {
+            if ($r['jenis'] === 'pemasukan') {
+                $totalIn += (float)$r['harga'];
+            } else {
+                $totalOut += (float)$r['harga'];
+            }
+        }
+        $saldo = $totalIn - $totalOut;
+
+        // Embed logo
+        $logoPath = FCPATH . 'assets/img/logo_sh.png';
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logoSrc  = 'data:image/png;base64,' . $logoData;
+
+        // Render view PDF
+        $html = view('pages/keuangan/pdf', [
+            'title'      => 'Laporan Keuangan',
+            'records'    => $records,
+            'totalIn'    => $totalIn,
+            'totalOut'   => $totalOut,
+            'saldo'      => $saldo,
+            'logoSrc'    => $logoSrc,
+        ]);
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4','portrait');
+        $dompdf->render();
+
+        return $dompdf->stream('laporan_keuangan.pdf', ['Attachment' => 0]);
     }
 }

@@ -7,7 +7,12 @@
 <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
 <?php endif ?>
 
-<a href="<?= site_url('keuangan/create') ?>" class="btn btn-primary mb-3">Tambah Transaksi</a>
+<p>
+    <a href="<?= site_url('keuangan/create') ?>" class="btn btn-primary mb-3 me-2">Tambah Transaksi</a>
+    <a href="<?= site_url('keuangan/pdf') ?>" target="_blank" class="btn btn-danger mb-3">
+        <i class="fas fa-file-pdf"></i> Cetak Laporan
+    </a>
+</p>
 
 <table class="table table-bordered">
     <thead>

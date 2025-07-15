@@ -8,7 +8,12 @@
     <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
     <?php endif ?>
 
-    <p><a href="<?= site_url('jemaat/create/' . $kk['id']) ?>" class="btn btn-primary mb-3">Tambah Anggota</a></p>
+    <p>
+        <a href="<?= site_url('jemaat/create/' . $kk['id']) ?>" class="btn btn-primary mb-3 me-2">Tambah Anggota</a>
+        <a href="<?= site_url('jemaat/pdf/'.$kk['id']) ?>" target="_blank" class="btn btn-danger mb-3">
+            <i class="fas fa-file-pdf"></i> Cetak PDF
+        </a>
+    </p>
 
     <table class="table table-bordered">
         <thead>

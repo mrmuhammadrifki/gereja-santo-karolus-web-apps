@@ -9,7 +9,12 @@
 </div>
 <?php endif ?>
 
-<a href="<?= base_url('baptis/create') ?>" class="btn btn-primary mb-3">Tambah Baptis</a>
+<p>
+    <a href="<?= base_url('baptis/create') ?>" class="btn btn-primary mb-3">Tambah Baptis</a>
+    <a href="<?= site_url('baptis/pdf') ?>" target="_blank" class="btn btn-danger mb-3">
+        <i class="fas fa-file-pdf"></i> Cetak PDF
+    </a>
+</p>
 
 <table class="table table-bordered">
     <thead>

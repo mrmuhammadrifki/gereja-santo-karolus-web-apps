@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\EkaristiModel;
 use CodeIgniter\Controller;
+use Dompdf\Dompdf;
 
 class Ekaristi extends Controller
 {
@@ -79,5 +80,32 @@ class Ekaristi extends Controller
         $this->model->delete($id);
         session()->setFlashdata('success', 'Data Ekaristi berhasil dihapus.');
         return redirect()->to('/ekaristi');
+    }
+
+    public function pdf()
+    {
+        // Ambil semua data ekaristi
+        $data = $this->model->findAll();
+
+        // Embed logo (assets/img/logo_sh.png)
+        $logoPath = FCPATH . 'assets/img/logo_sh.png';
+        $logoData = base64_encode(file_get_contents($logoPath));
+        $logoSrc  = 'data:image/png;base64,' . $logoData;
+
+        // Render view PDF
+        $html = view('pages/ekaristi/pdf', [
+            'title'    => 'Daftar Ekaristi',
+            'ekaristi' => $data,
+            'logoSrc'  => $logoSrc,
+        ]);
+
+        // Generate PDF
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4','portrait');
+        $dompdf->render();
+
+        // Tampilkan inline di browser
+        return $dompdf->stream('ekaristi.pdf', ['Attachment' => 0]);
     }
 }

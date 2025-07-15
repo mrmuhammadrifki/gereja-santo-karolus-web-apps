@@ -69,6 +69,7 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->get('jemaat/edit/(:num)', 'Jemaat::edit/$1');
     $routes->post('jemaat/update/(:num)', 'Jemaat::update/$1');
     $routes->get('jemaat/delete/(:num)', 'Jemaat::delete/$1');
+    $routes->get('jemaat/pdf/(:num)', 'Jemaat::pdf/$1');
 });
 
 $routes->group('', ['filter'=>'auth'], function($routes){
@@ -78,6 +79,7 @@ $routes->group('', ['filter'=>'auth'], function($routes){
     $routes->get('baptis/edit/(:num)', 'Baptis::edit/$1');
     $routes->post('baptis/update/(:num)','Baptis::update/$1');
     $routes->get('baptis/delete/(:num)','Baptis::delete/$1');
+    $routes->get('baptis/pdf', 'Baptis::pdf');
 });
 
 $routes->group('', ['filter'=>'auth'], function($routes){
@@ -87,6 +89,7 @@ $routes->group('', ['filter'=>'auth'], function($routes){
     $routes->get('krisma/edit/(:num)', 'Krisma::edit/$1');
     $routes->post('krisma/update/(:num)','Krisma::update/$1');
     $routes->get('krisma/delete/(:num)','Krisma::delete/$1');
+    $routes->get('krisma/pdf', 'Krisma::pdf');
 });
 
 $routes->group('', ['filter'=>'auth'], function($routes){
@@ -96,6 +99,7 @@ $routes->group('', ['filter'=>'auth'], function($routes){
     $routes->get('ekaristi/edit/(:num)', 'Ekaristi::edit/$1');
     $routes->post('ekaristi/update/(:num)','Ekaristi::update/$1');
     $routes->get('ekaristi/delete/(:num)','Ekaristi::delete/$1');
+    $routes->get('ekaristi/pdf', 'Ekaristi::pdf');
 });
 
 $routes->group('', ['filter'=>'auth'], function($routes){
@@ -105,6 +109,7 @@ $routes->group('', ['filter'=>'auth'], function($routes){
     $routes->get('pengurapan/edit/(:num)',  'Pengurapan::edit/$1');
     $routes->post('pengurapan/update/(:num)','Pengurapan::update/$1');
     $routes->get('pengurapan/delete/(:num)', 'Pengurapan::delete/$1');
+    $routes->get('pengurapan/pdf', 'Pengurapan::pdf');
 });
 
 $routes->group('', ['filter'=>'auth'], function($routes){
@@ -114,6 +119,7 @@ $routes->group('', ['filter'=>'auth'], function($routes){
     $routes->get('imamat/edit/(:num)', 'Imamat::edit/$1');
     $routes->post('imamat/update/(:num)','Imamat::update/$1');
     $routes->get('imamat/delete/(:num)','Imamat::delete/$1');
+    $routes->get('imamat/pdf', 'Imamat::pdf');
 });
 
 $routes->group('', ['filter'=>'auth'], function($routes){
@@ -123,6 +129,7 @@ $routes->group('', ['filter'=>'auth'], function($routes){
     $routes->get('perkawinan/edit/(:num)',  'Perkawinan::edit/$1');
     $routes->post('perkawinan/update/(:num)','Perkawinan::update/$1');
     $routes->get('perkawinan/delete/(:num)', 'Perkawinan::delete/$1');
+    $routes->get('perkawinan/pdf', 'Perkawinan::pdf');
 });
 
 $routes->group('', ['filter'=>'auth'], function($routes){
@@ -132,6 +139,7 @@ $routes->group('', ['filter'=>'auth'], function($routes){
     $routes->get('tobat/edit/(:num)', 'Tobat::edit/$1');
     $routes->post('tobat/update/(:num)','Tobat::update/$1');
     $routes->get('tobat/delete/(:num)','Tobat::delete/$1');
+    $routes->get('tobat/pdf', 'Tobat::pdf');
 });
 
 $routes->group('', ['filter'=>'auth'], function($routes){
@@ -141,4 +149,5 @@ $routes->group('', ['filter'=>'auth'], function($routes){
     $routes->get('keuangan/edit/(:num)', 'Keuangan::edit/$1');
     $routes->post('keuangan/update/(:num)','Keuangan::update/$1');
     $routes->get('keuangan/delete/(:num)','Keuangan::delete/$1');
+    $routes->get('keuangan/pdf', 'Keuangan::pdf');
 });
